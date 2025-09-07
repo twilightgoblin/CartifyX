@@ -12,7 +12,7 @@ import { dataService } from "@/lib/data-service"
 
 export function ProductFilters({ filters, onFiltersChange }) {
   const [categories, setCategories] = useState([])
-  const [priceRange, setPriceRange] = useState([0, 500])
+  const [priceRange, setPriceRange] = useState([0, 50000])
   const [searchTerm, setSearchTerm] = useState(filters.search || "")
 
   useEffect(() => {
