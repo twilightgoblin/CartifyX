@@ -25,7 +25,7 @@ export function ProductFilters({ filters, onFiltersChange }) {
 
   useEffect(() => {
     if (filters.minPrice !== undefined || filters.maxPrice !== undefined) {
-      setPriceRange([filters.minPrice || 0, filters.maxPrice || 500])
+      setPriceRange([filters.minPrice || 0, filters.maxPrice || 50000])
     }
   }, [filters.minPrice, filters.maxPrice])
 
