@@ -10,24 +10,26 @@ export function CartProvider({ children }) {
   const [cart, setCart] = useState(null)
   const [cartItems, setCartItems] = useState([])
   const [loading, setLoading] = useState(false)
-  const { user } = useAuth()
+  const { user, token } = useAuth()   // 👈 make sure your auth context returns token
 
   const refreshCart = async () => {
-    if (!user) {
-      setCart(null)
-      setCartItems([])
-      return
-    }
-
     setLoading(true)
     try {
-      const userCart = await dataService.getCart(user.id)
+      let userCart
+      if (token) {
+        userCart = await dataService.getCart(token)
+      } else if (user) {
+        userCart = await dataService.getCartByUser(user.id)
+      } else {
+        userCart = { items: [] }
+      }
+
       setCart(userCart)
 
-      // Get item details for each cart item
+      // Map each cartItem to full product details
       const itemsWithDetails = await Promise.all(
-        userCart.items.map(async (cartItem) => {
-          const item = await dataService.getItem(cartItem.itemId)
+        (userCart.items || []).map(async (cartItem) => {
+          const item = await dataService.getItem(cartItem.productId || cartItem.itemId) // handle both
           return item ? { item, quantity: cartItem.quantity } : null
         }),
       )
@@ -42,14 +44,18 @@ export function CartProvider({ children }) {
 
   useEffect(() => {
     refreshCart()
-  }, [user])
+  }, [token]) // refresh cart whenever token changes
 
   const addToCart = async (itemId, quantity = 1) => {
-    if (!user) throw new Error("User not authenticated")
-
     setLoading(true)
     try {
-      await dataService.addToCart(user.id, itemId, quantity)
+      if (token) {
+        await dataService.addToCart(token, itemId, quantity)
+      } else if (user) {
+        await dataService.addToCartByUser(user.id, itemId, quantity)
+      } else {
+        throw new Error("User not authenticated")
+      }
       await refreshCart()
     } catch (error) {
       throw error
@@ -59,11 +65,15 @@ export function CartProvider({ children }) {
   }
 
   const removeFromCart = async (itemId) => {
-    if (!user) throw new Error("User not authenticated")
-
     setLoading(true)
     try {
-      await dataService.removeFromCart(user.id, itemId)
+      if (token) {
+        await dataService.removeFromCart(token, itemId)
+      } else if (user) {
+        await dataService.removeFromCartByUser(user.id, itemId)
+      } else {
+        throw new Error("User not authenticated")
+      }
       await refreshCart()
     } catch (error) {
       throw error
@@ -73,11 +83,15 @@ export function CartProvider({ children }) {
   }
 
   const updateQuantity = async (itemId, quantity) => {
-    if (!user) throw new Error("User not authenticated")
-
     setLoading(true)
     try {
-      await dataService.updateCartItemQuantity(user.id, itemId, quantity)
+      if (token) {
+        await dataService.updateCartItemQuantity(token, itemId, quantity)
+      } else if (user) {
+        await dataService.updateCartItemQuantityByUser(user.id, itemId, quantity)
+      } else {
+        throw new Error("User not authenticated")
+      }
       await refreshCart()
     } catch (error) {
       throw error

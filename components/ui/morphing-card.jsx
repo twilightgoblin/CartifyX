@@ -31,10 +31,11 @@ export function MorphingCard({ children, className = "", ...props }) {
         }`}
         style={{
           padding: "2px",
-          background: isHovered
+          backgroundImage: isHovered
             ? "linear-gradient(45deg, var(--primary), var(--accent), var(--primary))"
-            : "transparent",
-          backgroundSize: "200% 200%",
+            : "none",
+          /* keep backgroundSize separate (Tailwind also sets it via bg-[length:...]) */
+          backgroundSize: isHovered ? "200% 200%" : undefined,
         }}
       >
         <div className="w-full h-full bg-card rounded-lg" />
