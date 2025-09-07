@@ -55,7 +55,7 @@ export function ProductFilters({ filters, onFiltersChange }) {
 
   const clearFilters = () => {
     setSearchTerm("")
-    setPriceRange([0, 500])
+    setPriceRange([0, 50000])
     onFiltersChange({})
   }
 
@@ -114,7 +114,7 @@ export function ProductFilters({ filters, onFiltersChange }) {
             <Slider
               value={priceRange}
               onValueChange={handlePriceChange}
-              max={500}
+              max={50000}
               min={0}
               step={10}
               className="w-full"
