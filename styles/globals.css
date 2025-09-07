@@ -123,3 +123,17 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Keep header interactive when libraries set data-scroll-locked on body (e.g. sheet/dialog open)
+   Some overlays add a full-width element or set pointer-events on ancestors which can block
+   clicks on the header avatar/dropdown trigger. This override ensures the header remains
+   clickable and is above overlays. */
+body[data-scroll-locked] header {
+  pointer-events: auto !important;
+  z-index: 9999; /* ensure header is above most overlays */
+}
+
+/* also ensure header children (avatar/button) accept pointer events */
+body[data-scroll-locked] header * {
+  pointer-events: auto !important;
+}

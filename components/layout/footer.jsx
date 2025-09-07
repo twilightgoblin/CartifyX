@@ -167,7 +167,7 @@ export function Footer() {
               </li>
               <li className="flex items-center space-x-2 text-muted-foreground">
                 <Phone className="h-4 w-4" />
-                <span>+1 (555) 123-4567</span>
+                <span>+91 XXXXX XXXXX</span>
               </li>
               <li className="flex items-center space-x-2 text-muted-foreground">
                 <MapPin className="h-4 w-4" />
@@ -178,7 +178,7 @@ export function Footer() {
         </div>
 
         <div className="border-t mt-8 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-muted-foreground">
-          <p>&copy; 2024 CartifyX. All rights reserved. Built with Next.js and v0.</p>
+          <p>&copy; 2024 CartifyX. All rights reserved.</p>
           <div className="flex space-x-4 mt-4 md:mt-0">
             <span>Secure payments</span>
             <span>•</span>
